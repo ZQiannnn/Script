@@ -220,7 +220,7 @@ async function GetCookie() {
 
       // const respBody = JSON.parse($response.body);
       // const pin = respBody.userInfoSns.unickName;
-      const code = `wskey=${wskey};pt_pin=;`;
+      const code = `wskey=${wskey};pin=z604922962;`;
 
       const username = getUsername(code);
       const CookiesData = getCache();
