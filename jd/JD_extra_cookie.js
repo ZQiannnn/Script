@@ -158,8 +158,7 @@ async function GetCookie() {
   const CV = `${$request.headers["Cookie"] || $request.headers["cookie"]};`;
 
   if (
-    $request.url.indexOf("queryJDUserInfo") > -1 ||
-    $request.url.indexOf("openUpgrade") > -1
+    $request.url.indexOf("basicConfig") > -1
   ) {
     if (CV.match(/(pt_key=.+?pt_pin=|pt_pin=.+?pt_key=)/)) {
       const CookieValue = CV.match(/pt_key=.+?;/) + CV.match(/pt_pin=.+?;/);
@@ -215,7 +214,7 @@ async function GetCookie() {
     } else {
       console.log("ck 写入失败，未找到相关 ck");
     }
-  } else if ($request.headers && $request.url.indexOf("newUserInfo") > -1) {
+  } else if ($request.headers && $request.url.indexOf("xview2Config") > -1) {
     if (CV.match(/wskey=([^=;]+?);/)[1]) {
       const wskey = CV.match(/wskey=([^=;]+?);/)[1];
 
