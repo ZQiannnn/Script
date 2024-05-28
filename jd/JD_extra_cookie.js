@@ -214,7 +214,7 @@ async function GetCookie() {
     } else {
       console.log("ck 写入失败，未找到相关 ck");
     }
-  } else if ($request.url.indexOf("xview2Config") > -1) {
+  } else if ($request.url.indexOf("bypass") > -1) {
     if (CV.match(/wskey=([^=;]+?);/)[1]) {
       const wskey = CV.match(/wskey=([^=;]+?);/)[1];
 
