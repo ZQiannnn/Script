@@ -53,7 +53,7 @@ function getUsername(ck) {
 
 async function getScriptUrl() {
   const response = await $.http.get({
-    url: "https://raw.githubusercontent.com/dompling/Script/master/jd/ql_api.js",
+    url: "https://raw.githubusercontent.com/ZQiannnn/Script/master/jd/ql_api.js",
   });
   return response.body;
 }
@@ -120,6 +120,7 @@ const allConfig = [JSON.parse($.read("#ql"))];
             $.ql_config.ip,
             `同步${name}更新青龙成功🎉`
           );
+          $.ql.wsckTask()
         } else {
           $.error("青龙同步失败");
         }

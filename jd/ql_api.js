@@ -57,6 +57,14 @@ $.ql = {
     };
     return $.http.get(opt).then((response) => JSON.parse(response.body));
   },
+  wsckTask(){
+    const opt = {
+      url: `${$.ql_url}/${this.type}/open/crons/run`,
+      headers: this.headers,
+      body: "[386]"
+    };
+    return $.http.put(opt).then((response) => JSON.parse(response.body));
+  },
   initial: () => {
     $.ql_url = $.ql_config.ip;
     if ($.ql_url && !$.ql_url.match(/^(http|https)/))
