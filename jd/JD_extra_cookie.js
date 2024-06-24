@@ -237,6 +237,7 @@ async function GetCookie() {
         for (const item of allConfig) {
           $.ql_config = item;
           $.ql.initial();
+          console.log(allConfig);
           await $.ql.asyncCookie(code);
         }
       }
