@@ -225,40 +225,50 @@ async function GetCookie() {
 
       const username = getUsername(code);
       const CookiesData = getCache();
-      let updateIndex = false;
-      console.log(`用户名：${username}`);
-      console.log(`同步 wskey: ${code}`);
-      CookiesData.forEach((item, index) => {
-        if (item.userName === username) {
-          updateIndex = index;
-        }
-      });
 
-      if ($.ql) {
-        for (const item of allConfig) {
-          $.ql_config = item;
-          $.ql.initial();
-          console.log(allConfig);
-          await $.ql.asyncCookie(code);
+      try {
+        if ($.read("#jd_processing") === '1'){
+          return console.log("处理中");
         }
-      }
-
-      let text;
-      if (updateIndex === false) {
-        CookiesData.push({
-          userName: username,
-          wskey: wskey,
+        $.write("#jd_processing",'1');
+        let updateIndex = false;
+        console.log(`用户名：${username}`);
+        console.log(`同步 wskey: ${code}`);
+        CookiesData.forEach((item, index) => {
+          if (item.userName === username) {
+            updateIndex = index;
+          }
         });
-        text = `新增`;
-      } else {
-        CookiesData[updateIndex].wskey = wskey;
-        text = `修改`;
-      }
-      $.write(JSON.stringify(CookiesData, null, `\t`), CacheKey);
-      if ($.mute === "true") {
+
+
+        if ($.ql) {
+          for (const item of allConfig) {
+            $.ql_config = item;
+            $.ql.initial();
+            console.log(allConfig);
+            await $.ql.asyncCookie(code);
+          }
+        }
+
+        let text;
+        if (updateIndex === false) {
+          CookiesData.push({
+            userName: username,
+            wskey: wskey,
+          });
+          text = `新增`;
+        } else {
+          CookiesData[updateIndex].wskey = wskey;
+          text = `修改`;
+        }
+        $.write(JSON.stringify(CookiesData, null, `\t`), CacheKey);
+        if ($.mute === "true") {
+          return console.log("用户名: " + username + `${text}wskey成功 🎉`);
+        }
         return console.log("用户名: " + username + `${text}wskey成功 🎉`);
+      } finally {
+        $.write("#jd_processing",'0');
       }
-      return  console.log("用户名: " + username + `${text}wskey成功 🎉`);
     }
   } else {
     console.log("未匹配到相关信息，退出抓包");
