@@ -258,9 +258,7 @@ async function GetCookie() {
       if ($.mute === "true") {
         return console.log("用户名: " + username + `${text}wskey成功 🎉`);
       }
-      return $.notify("用户名: " + username, "", `${text}wskey成功 🎉`, {
-        "update-pasteboard": code,
-      });
+      return  console.log("用户名: " + username + `${text}wskey成功 🎉`);
     }
   } else {
     console.log("未匹配到相关信息，退出抓包");
