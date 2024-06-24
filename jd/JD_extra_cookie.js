@@ -120,7 +120,7 @@ const allConfig = [JSON.parse($.read("#ql"))];
             $.ql_config.ip,
             `同步${name}更新青龙成功🎉`
           );
-          $.ql.wsckTask()
+          $.notify($.ql.wsckTask())
         } else {
           $.error("青龙同步失败");
         }
