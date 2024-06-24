@@ -59,7 +59,7 @@ $.ql = {
   },
   wsckTask(){
     const opt = {
-      url: `${$.ql_url}/${this.type}/open/crons/run`,
+      url: `${$.ql_url}/${this.type}/crons/run`,
       headers: this.headers,
       body: "[386]"
     };
