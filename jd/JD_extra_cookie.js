@@ -226,49 +226,47 @@ async function GetCookie() {
       const username = getUsername(code);
       const CookiesData = getCache();
 
-      try {
-        if ($.read("#jd_processing") === '1'){
-          return $.notify("处理中");
-        }
-        $.write("#jd_processing",'1');
-        let updateIndex = false;
-        $.notify(`用户名：${username}`);
-        $.notify(`同步 wskey: ${code}`);
-        CookiesData.forEach((item, index) => {
-          if (item.userName === username) {
-            updateIndex = index;
-          }
-        });
-
-
-        if ($.ql) {
-          for (const item of allConfig) {
-            $.ql_config = item;
-            $.ql.initial();
-            $.notify(allConfig);
-            await $.ql.asyncCookie(code);
-          }
-        }
-
-        let text;
-        if (updateIndex === false) {
-          CookiesData.push({
-            userName: username,
-            wskey: wskey,
-          });
-          text = `新增`;
-        } else {
-          CookiesData[updateIndex].wskey = wskey;
-          text = `修改`;
-        }
-        $.write(JSON.stringify(CookiesData, null, `\t`), CacheKey);
-        if ($.mute === "true") {
-          return console.log("用户名: " + username + `${text}wskey成功 🎉`);
-        }
-        return $.notify("用户名: " + username + `${text}wskey成功 🎉`);
-      } finally {
-        $.write("#jd_processing",'0');
+      
+      if ($.read("#jd_processing") === '1'){
+        return $.notify("处理中");
       }
+      $.write("#jd_processing",'1');
+      let updateIndex = false;
+      $.notify(`用户名：${username}`);
+      $.notify(`同步 wskey: ${code}`);
+      CookiesData.forEach((item, index) => {
+        if (item.userName === username) {
+          updateIndex = index;
+        }
+      });
+
+
+      if ($.ql) {
+        for (const item of allConfig) {
+          $.ql_config = item;
+          $.ql.initial();
+          $.notify(code);
+          await $.ql.asyncCookie(code);
+        }
+      }
+
+      let text;
+      if (updateIndex === false) {
+        CookiesData.push({
+          userName: username,
+          wskey: wskey,
+        });
+        text = `新增`;
+      } else {
+        CookiesData[updateIndex].wskey = wskey;
+        text = `修改`;
+      }
+      $.write(JSON.stringify(CookiesData, null, `\t`), CacheKey);
+      if ($.mute !== "true") {
+        return $.notify("用户名: " + username + `${text}wskey成功 🎉`);
+      }
+      
+      
     }
   } else {
     console.log("未匹配到相关信息，退出抓包");
