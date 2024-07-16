@@ -228,12 +228,12 @@ async function GetCookie() {
 
       try {
         if ($.read("#jd_processing") === '1'){
-          return console.log("处理中");
+          return $.notify("处理中");
         }
         $.write("#jd_processing",'1');
         let updateIndex = false;
-        console.log(`用户名：${username}`);
-        console.log(`同步 wskey: ${code}`);
+        $.notify(`用户名：${username}`);
+        $.notify(`同步 wskey: ${code}`);
         CookiesData.forEach((item, index) => {
           if (item.userName === username) {
             updateIndex = index;
@@ -245,7 +245,7 @@ async function GetCookie() {
           for (const item of allConfig) {
             $.ql_config = item;
             $.ql.initial();
-            console.log(allConfig);
+            $.notify(allConfig);
             await $.ql.asyncCookie(code);
           }
         }
@@ -265,7 +265,7 @@ async function GetCookie() {
         if ($.mute === "true") {
           return console.log("用户名: " + username + `${text}wskey成功 🎉`);
         }
-        return console.log("用户名: " + username + `${text}wskey成功 🎉`);
+        return $.notify("用户名: " + username + `${text}wskey成功 🎉`);
       } finally {
         $.write("#jd_processing",'0');
       }
