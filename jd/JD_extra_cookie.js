@@ -71,7 +71,7 @@ const allConfig = [JSON.parse($.read("#ql"))];
     $.ql.asyncCookie = async (cookieValue, name = "JD_WSCK") => {
       try {
         await $.ql.login();
-        $.info(`青龙${name}登陆同步`);
+        $.notify(`青龙${name}登陆同步`);
         let qlCk = await $.ql.select(name);
         if (!qlCk.data) return;
         qlCk = qlCk.data;
@@ -80,7 +80,7 @@ const allConfig = [JSON.parse($.read("#ql"))];
           (item) => getUsername(item.value) === DecodeName
         );
         if (current && current.value === cookieValue) {
-          $.info("该账号无需更新");
+          $.notify("该账号无需更新");
           return;
         }
 
@@ -109,7 +109,7 @@ const allConfig = [JSON.parse($.read("#ql"))];
             { name: name, value: cookieValue, remarks: remarks },
           ]);
         }
-        $.info(JSON.stringify(response));
+        $.notify("请求完成："+JSON.stringify(response));
         if ($.mute === "true" && response.code === 200) {
           return $.info(
             "用户名: " + DecodeName + `同步${name}更新青龙成功🎉`
