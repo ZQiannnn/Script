@@ -71,7 +71,9 @@ const allConfig = [JSON.parse($.read("#ql"))];
     $.ql.asyncCookie = async (cookieValue, name = "JD_WSCK") => {
       try {
         await $.ql.login();
-        $.info(`青龙${name}登陆同步`);
+        if ($.mute !== "true"){
+          $.notify(`青龙${name}登陆同步`);
+        }
         let qlCk = await $.ql.select(name);
         if (!qlCk.data) return;
         qlCk = qlCk.data;
@@ -80,7 +82,9 @@ const allConfig = [JSON.parse($.read("#ql"))];
           (item) => getUsername(item.value) === DecodeName
         );
         if (current && current.value === cookieValue) {
-          $.info("该账号无需更新");
+          if ($.mute !== "true"){
+            $.notify("该账号无需更新");
+          }
           return;
         }
 
@@ -109,7 +113,9 @@ const allConfig = [JSON.parse($.read("#ql"))];
             { name: name, value: cookieValue, remarks: remarks },
           ]);
         }
-        $.info(JSON.stringify(response));
+        if ($.mute !== "true"){
+          $.notify("请求完成："+JSON.stringify(response));
+        }
         if ($.mute === "true" && response.code === 200) {
           return $.info(
             "用户名: " + DecodeName + `同步${name}更新青龙成功🎉`
@@ -226,49 +232,42 @@ async function GetCookie() {
       const username = getUsername(code);
       const CookiesData = getCache();
 
-      try {
-        if ($.read("#jd_processing") === '1'){
-          return console.log("处理中");
+  
+      let updateIndex = false;
+      $.info(`用户名：${username}`);
+      $.info(`同步 wskey: ${code}`);
+      CookiesData.forEach((item, index) => {
+        if (item.userName === username) {
+          updateIndex = index;
         }
-        $.write("#jd_processing",'1');
-        let updateIndex = false;
-        console.log(`用户名：${username}`);
-        console.log(`同步 wskey: ${code}`);
-        CookiesData.forEach((item, index) => {
-          if (item.userName === username) {
-            updateIndex = index;
-          }
-        });
+      });
 
 
-        if ($.ql) {
-          for (const item of allConfig) {
-            $.ql_config = item;
-            $.ql.initial();
-            console.log(allConfig);
-            await $.ql.asyncCookie(code);
-          }
+      if ($.ql) {
+        for (const item of allConfig) {
+          $.ql_config = item;
+          $.ql.initial();
+          await $.ql.asyncCookie(code);
         }
-
-        let text;
-        if (updateIndex === false) {
-          CookiesData.push({
-            userName: username,
-            wskey: wskey,
-          });
-          text = `新增`;
-        } else {
-          CookiesData[updateIndex].wskey = wskey;
-          text = `修改`;
-        }
-        $.write(JSON.stringify(CookiesData, null, `\t`), CacheKey);
-        if ($.mute === "true") {
-          return console.log("用户名: " + username + `${text}wskey成功 🎉`);
-        }
-        return console.log("用户名: " + username + `${text}wskey成功 🎉`);
-      } finally {
-        $.write("#jd_processing",'0');
       }
+
+      let text;
+      if (updateIndex === false) {
+        CookiesData.push({
+          userName: username,
+          wskey: wskey,
+        });
+        text = `新增`;
+      } else {
+        CookiesData[updateIndex].wskey = wskey;
+        text = `修改`;
+      }
+      $.write(JSON.stringify(CookiesData, null, `\t`), CacheKey);
+      if ($.mute !== "true") {
+        return $.notify("用户名: " + username + `${text}wskey成功 🎉`);
+      }
+      
+      
     }
   } else {
     console.log("未匹配到相关信息，退出抓包");
