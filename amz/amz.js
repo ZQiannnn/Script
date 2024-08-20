@@ -28,6 +28,7 @@ if (url.indexOf(path2) != -1) {
             // 修改 itemList 中第一个元素的 shipmentCondition
             if (order.itemList && order.itemList.length > 0) {
                 order.itemList[0].shipmentCondition = "DELIVERED";
+                order.itemList[0].quantity = 1;
             }
         }
     });
