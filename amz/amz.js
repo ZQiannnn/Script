@@ -9,7 +9,9 @@ if (url.indexOf(path1) != -1) {
     console.log("getOrderListByCustomerId")
     let jsonData = JSON.parse(body);
     let orderIdToRemove = "113-3749629-3000236";
-    jsonData.externalOrderIdList = jsonData.externalOrderIdList.filter(orderId => orderId !== orderIdToRemove);
+    let orderIdToRemove2 = "113-4875200-3405031";
+    jsonData.externalOrderIdList = jsonData.externalOrderIdList.filter(orderId => orderId !== orderIdToRemove
+    && orderId !== orderIdToRemove2);
     // 更新订单总数
     jsonData.totalOrderCount = jsonData.externalOrderIdList.length;
     $done({ body: JSON.stringify(jsonData) });
