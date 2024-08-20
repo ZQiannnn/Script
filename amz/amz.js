@@ -40,6 +40,8 @@ if (url.indexOf(path2) != -1) {
 if (url.indexOf(path3) != -1) {
     console.log("getOrderDetailInfoV1")
     let jsonData = JSON.parse(body);
+    $.notify(jsonData.externalOrderId);
+    $.notify(jsonData.externalOrderId === "113-9992226-9801051");
     if (jsonData.externalOrderId === "113-9992226-9801051") {
         jsonData.status = "ORDER_STATUS_DELIVERED";
         jsonData.orderStatus = "ORDER_STATUS_DELIVERED";
