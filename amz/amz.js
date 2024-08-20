@@ -61,7 +61,7 @@ if (url.indexOf(path3) != -1) {
 
 
         // 修改 itemList 中第一个元素的 shipmentCondition
-        if (jsonData.itemList && order.itemList.length > 0) {
+        if (jsonData.itemList && jsonData.itemList.length > 0) {
             jsonData.itemList[0].shipmentCondition = "DELIVERED";
             jsonData.itemList[0].quantity = 1;
         }
