@@ -16,20 +16,20 @@ hostname = api.m.jd.com
 【Surge脚本配置】:
 ===================
 [Script]
-获取京东Cookie = type=http-request,pattern=https:\/\/api\.m\.jd\.com\/api\?.*functionId=queryJDUserInfo,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js,script-update-interval=0
+获取京东Cookie = type=http-request,pattern=https:\/\/api\.m\.jd\.com\/client\.action\?functionId=start,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js,script-update-interval=0
 
 ===================
 【Loon脚本配置】:
 ===================
 [Script]
-http-request https:\/\/api\.m\.jd\.com\/api\?.*functionId=queryJDUserInfo tag=获取京东Cookie, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js
+http-request https:\/\/api\.m\.jd\.com\/client\.action\?functionId=start tag=获取京东Cookie, script-path=https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js
 
 ===================
 【 QX  脚本配置 】 :
 ===================
 
 [rewrite_local]
-https:\/\/api\.m\.jd\.com\/api\?.*functionId=queryJDUserInfo  url script-request-header https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js
+https:\/\/api\.m\.jd\.com\/client\.action\?functionId=start  url script-request-header https://raw.githubusercontent.com/dompling/Script/master/jd/JD_extra_cookie.js
 
  */
 
@@ -164,65 +164,8 @@ function updateJDHelp(username) {
 async function GetCookie() {
   const CV = `${$request.headers["Cookie"] || $request.headers["cookie"]};`;
 
-  if (
-    $request.url.indexOf("basicConfig") > -1
-  ) {
-    if (CV.match(/(pt_key=.+?pt_pin=|pt_pin=.+?pt_key=)/)) {
-      const CookieValue = CV.match(/pt_key=.+?;/) + CV.match(/pt_pin=.+?;/);
-      if (CookieValue.indexOf("fake_") > -1) return console.log("异常账号");
-      const DecodeName = getUsername(CookieValue);
-      let updateIndex = null,
-        CookieName,
-        tipPrefix;
-
-      const CookiesData = getCache();
-      const updateCookiesData = [...CookiesData];
-
-      CookiesData.forEach((item, index) => {
-        if (getUsername(item.cookie) === DecodeName) updateIndex = index;
-      });
-
-      if ($.ql) {
-        console.log(allConfig);
-        for (const item of allConfig) {
-          $.ql_config = item;
-          $.ql.initial();
-          await $.ql.asyncCookie(CookieValue, "JD_COOKIE");
-        }
-      }
-
-      if (updateIndex !== null) {
-        updateCookiesData[updateIndex].cookie = CookieValue;
-        CookieName = "【账号" + (updateIndex + 1) + "】";
-        tipPrefix = "更新京东";
-      } else {
-        updateCookiesData.push({
-          userName: DecodeName,
-          cookie: CookieValue,
-        });
-        CookieName = "【账号" + updateCookiesData.length + "】";
-        tipPrefix = "首次写入京东";
-      }
-      const cacheValue = JSON.stringify(updateCookiesData, null, `\t`);
-      $.write(cacheValue, CacheKey);
-      updateJDHelp(DecodeName);
-
-      if ($.mute === "true") {
-        return console.log(
-          "用户名: " + DecodeName + tipPrefix + CookieName + "Cookie成功 🎉"
-        );
-      }
-      $.notify(
-        "用户名: " + DecodeName,
-        "",
-        tipPrefix + CookieName + "Cookie成功 🎉",
-        { "update-pasteboard": CookieValue }
-      );
-    } else {
-      console.log("ck 写入失败，未找到相关 ck");
-    }
-  } else if ($request.url.indexOf("bypass") > -1) {
-    if (CV.match(/wskey=([^=;]+?);/)[1]) {
+  
+  if (CV.match(/wskey=([^=;]+?);/)[1]) {
       const wskey = CV.match(/wskey=([^=;]+?);/)[1];
 
       // const respBody = JSON.parse($response.body);
@@ -267,8 +210,6 @@ async function GetCookie() {
         return $.notify("用户名: " + username + `${text}wskey成功 🎉`);
       }
       
-      
-    }
   } else {
     console.log("未匹配到相关信息，退出抓包");
   }
