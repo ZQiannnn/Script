@@ -11,25 +11,25 @@ Version: v1.1.0
 
 ===================
 [MITM]
-hostname = api.m.jd.com
+hostname = sh.jd.com
 
 【Surge脚本配置】:
 ===================
 [Script]
-获取京东Cookie = type=http-request,pattern=^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/ZQiannnn/Script/refs/heads/master/jd/JD_extra_cookie.js,script-update-interval=0
+获取京东Cookie = type=http-request,pattern=^https?:\/\/sh\.jd\.com\/d,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/ZQiannnn/Script/refs/heads/master/jd/JD_extra_cookie.js,script-update-interval=0
 
 ===================
 【Loon脚本配置】:
 ===================
 [Script]
-http-request ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start tag=获取京东Cookie, script-path=https://raw.githubusercontent.com/ZQiannnn/Script/refs/heads/master/jd/JD_extra_cookie.js
+http-request ^https?:\/\/sh\.jd\.com\/d tag=获取京东Cookie, script-path=https://raw.githubusercontent.com/ZQiannnn/Script/refs/heads/master/jd/JD_extra_cookie.js
 
 ===================
 【 QX  脚本配置 】 :
 ===================
 
 [rewrite_local]
-^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=start url script-request-header https://raw.githubusercontent.com/ZQiannnn/Script/refs/heads/master/jd/JD_extra_cookie.js
+^https?:\/\/sh\.jd\.com\/d url script-request-header https://raw.githubusercontent.com/ZQiannnn/Script/refs/heads/master/jd/JD_extra_cookie.js
 
  */
 
